@@ -1,0 +1,18 @@
+<data>
+  <element>
+    <owner>Иванов Иван Иванович</owner>
+    <num>66:10:0630901:12345-78/040/2019-1 от 01.03.2018</num>
+    <kv>2</kv>
+    <sq>85.4</sq>
+    <part>0.5</part>
+    <voices>42.7</voices>
+  </element>
+  <element>
+    <owner>Петров Петр Петрович</owner>
+    <num>67:14:0634941:12345-84/444/2019-4 от 04.04.2019</num>
+    <kv>2</kv>
+    <sq>44.1</sq>
+    <part>1</part>
+    <voices>44.1</voices>
+  </element>
+</data>
