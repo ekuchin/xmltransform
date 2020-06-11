@@ -10,12 +10,13 @@ public class App
     {
 
       System.out.println("App started");
-      //XmlTransform.unpack(FOLDER_SOURCE,FOLDER_TMP);
-      //XmlTransform.unpack(FOLDER_TMP,FOLDER_TMP);
-      //XmlTransform.clean();
+      XmlTransform.unpack(FOLDER_SOURCE,FOLDER_TMP);
+      XmlTransform.unpack(FOLDER_TMP,FOLDER_TMP);
+      XmlTransform.clean(FOLDER_TMP,FOLDER_CLEAN);
       //XmlTransform.convert(FOLDER_CLEAN, "resources/xml/data.xml");
-      
-      XmlTransform.export("resources/xml/data.xml","resources/xsl/reestr.xsl","resources/html/reestr.html");
+      //XmlTransform.convert(FOLDER_CLEAN, "resources/xml/msk-m6bk1.xml");
+
+    //XmlTransform.export("resources/xml/data.xml","resources/xsl/reestr.xsl","resources/html/reestr.html");
       //XmlTransform.export("resources/xml/data.xml","resources/xsl/bulletin.xsl","resources/html/bulletin.html");
         
       //Csv2Xml.convert("old_reestr.csv", "testdata.xml", ";", "data", "element");

@@ -11,7 +11,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class RosreestrRecord{
-  final String COMMON_PROPERTY="Совместная";
+  final static String COMMON_PROPERTY="Совместная";
   private Document xmldoc = null;
 
 RosreestrRecord(String xmlFilename){
@@ -28,6 +28,28 @@ RosreestrRecord(String xmlFilename){
   }
 }
 
+  public String getStreet(){
+    String res="";
+    NodeList nList = xmldoc.getElementsByTagName("adrs:Street");
+    Node rights=nList.item(0);
+    try{
+      res=rights.getAttributes().getNamedItem("Name").getNodeValue();
+    }
+    catch(Exception e){}
+    return res;
+  }
+
+  public String getHouse(){
+    String res="";
+    NodeList nList = xmldoc.getElementsByTagName("adrs:Level1");
+    Node rights=nList.item(0);
+    try{
+      res=rights.getAttributes().getNamedItem("Value").getNodeValue();
+    }
+    catch(Exception e){}
+    return res;
+  }
+
 public String getArea(){
   NodeList nList = xmldoc.getElementsByTagName("Area");
   Node rights=nList.item(0);
@@ -43,9 +65,6 @@ public String getApartment(){
       res=rights.getAttributes().getNamedItem("Value").getNodeValue();
   }
   catch(Exception e){}
-  //if(res.length()<2){
-    //  res="0"+res;
-    //}
   return res;
 }
 
@@ -58,15 +77,13 @@ public String getCadastralNumber(){
 
 public String getVoices(String part){
   String voices=this.getArea();
-  if (!part.equals("1") && !part.equals(this.COMMON_PROPERTY)){
+  if (!part.equals("1") && !part.equals(RosreestrRecord.COMMON_PROPERTY)){
     int drob=part.indexOf("/");
     String sq=this.getArea();
 
-    System.out.println(part);
-    System.out.println(drob);
-    Float ch=Float.parseFloat(part.substring(0,drob));
-    Float zn=Float.parseFloat(part.substring(drob+1));
-    Float sqarr=Float.parseFloat(sq);
+    float ch=Float.parseFloat(part.substring(0,drob));
+    float zn=Float.parseFloat(part.substring(drob+1));
+    float sqarr=Float.parseFloat(sq);
 
     voices=String.valueOf(ch/zn*sqarr);
     drob=voices.indexOf(".")+3;
@@ -109,14 +126,14 @@ public ArrayList<Owner> getOwners(){
 
                             while(namenode.getNextSibling()!=null ){
                               //System.out.println(namenode.getNodeName());
-                              if (namenode.getNodeName().equals("FamilyName")){f=namenode.getTextContent();};
-                              if (namenode.getNodeName().equals("FirstName")){i=namenode.getTextContent();};
-                              if (namenode.getNodeName().equals("Patronymic")){o=namenode.getTextContent();};
+                              if (namenode.getNodeName().equals("FamilyName")){f=namenode.getTextContent();}
+                              if (namenode.getNodeName().equals("FirstName")){i=namenode.getTextContent();}
+                              if (namenode.getNodeName().equals("Patronymic")){o=namenode.getTextContent();}
                               namenode = namenode.getNextSibling();
                             }
                             if(owner.length()!=0){
                               owner+=", ";
-                              part=this.COMMON_PROPERTY;
+                              part=RosreestrRecord.COMMON_PROPERTY;
                             }
                             owner+=f+" "+i+" "+o;
                             

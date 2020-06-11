@@ -19,15 +19,10 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
 public class XmlTransform {
-    final static String FOLDER_SOURCE="dirty";
-    final static String FOLDER_TMP="tmp";
-    final static String FOLDER_CLEAN="clean";
-    
+
     public static void unpack(String folderIn, String folderOut){
         final File folder=new File(folderIn);
         String ext;String name;
@@ -62,74 +57,31 @@ public class XmlTransform {
           }
       }
  
-      public static void clean(){
-        final File folder=new File(FOLDER_TMP);
+      public static void clean(String folderIn, String folderOut){
+        final File folder=new File(folderIn);
         File[] folderEntries = folder.listFiles();
         String ext;String name;
       
         for (File entry : folderEntries){
-          String ul="";
-          String dom="";
-          String kv="000";
-          String sq="";
+
             if (!entry.isDirectory()){
               name = entry.getName(); // получим название файла
               ext = name.substring(name.length()-4);
               if (ext.equals(".xml")){
                 try{
-                  File fXmlFile = new File(entry.getPath());
-                  DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-                  DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-                  Document doc = dBuilder.parse(fXmlFile);
-                  //optional, but recommended
-                  //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
-                  doc.getDocumentElement().normalize();
-      
-                  //Node root = doc.getDocumentElement();
-                //  Node first=root;
-      
-                NodeList nList = doc.getElementsByTagName("Area");
-                Node rights=nList.item(0);
-                sq=rights.getTextContent();
-      
-                nList = doc.getElementsByTagName("Address");
-      
-                  for (int temp = 0; temp < nList.getLength(); temp++) {
-                    Node nNode = nList.item(temp);
-      
-                    Node child = nNode.getFirstChild();
-                    while( child.getNextSibling()!=null ){
-      
-                      if(child.getNodeName().equals("adrs:Street")){
-                        if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                          Element eElement = (Element) child;
-                          ul=eElement.getAttribute("Name");
-                        }
-                      }
-      
-                      if(child.getNodeName().equals("adrs:Level1")){
-                        if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                          Element eElement = (Element) child;
-                          dom=eElement.getAttribute("Value");
-                        }
-                      }
-      
-                      if(child.getNodeName().equals("adrs:Apartment")){
-                        if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                          Element eElement = (Element) child;
-                          kv+=eElement.getAttribute("Value");
-                          kv=kv.substring(kv.length()-3);
-                        }
-                      }
-      
-                      child = child.getNextSibling();
-                    }
-      
-                    System.out.println(entry.getName());
-                    System.out.println(ul+" "+dom+" "+kv+" "+sq);
+
+                  RosreestrRecord record = new RosreestrRecord(entry.getPath());
+                  String ul=record.getStreet();
+                  String dom=record.getHouse();
+                  String kv=record.getApartment();
+                  String sq=record.getArea();
+
+                  System.out.println(entry.getName());
+                  String outfile=ul+" "+dom+" "+String.format("%1$3s", kv)+" "+sq;
+                  System.out.println(outfile);
                     //копировать файл
-                    Files.copy(Paths.get(entry.getPath()), new FileOutputStream(FOLDER_CLEAN+"/"+ul+"_"+dom+"_"+kv+"_"+sq+".xml"));      
-                  }
+                  Files.copy(Paths.get(entry.getPath()), new FileOutputStream(folderOut+"/"+outfile+".xml"));
+                  //}
       
                 }catch (Exception e) {
                   e.printStackTrace();
