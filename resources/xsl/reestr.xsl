@@ -13,9 +13,13 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
        page-break-after: always;
       }
      }
+     table, tr, td, th  {
+     border: 1px solid;
+     border-collapse: collapse;
+     }
     </style>
 
-    <table border="1">
+    <table>
       <tr>
         <th>Квартира</th>
         <th>Код</th>
