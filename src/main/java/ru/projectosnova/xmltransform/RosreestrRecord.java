@@ -39,12 +39,13 @@ RosreestrRecord(String xmlFilename){
     return res;
   }
 
-  public String getHouse(){
+  public String getHouse(String level){
     String res="";
-    NodeList nList = xmldoc.getElementsByTagName("adrs:Level1");
+    NodeList nList = xmldoc.getElementsByTagName("adrs:Level"+level);
     Node rights=nList.item(0);
     try{
-      res=rights.getAttributes().getNamedItem("Value").getNodeValue();
+      res=rights.getAttributes().getNamedItem("Type").getNodeValue();
+      res+=rights.getAttributes().getNamedItem("Value").getNodeValue();
     }
     catch(Exception e){}
     return res;
@@ -66,6 +67,12 @@ public String getApartment(){
   }
   catch(Exception e){}
   return res;
+}
+
+public String getAddressOther(){
+  NodeList nList = xmldoc.getElementsByTagName("adrs:Other");
+  Node rights=nList.item(0);
+  return rights.getTextContent();
 }
 
 public String getCadastralNumber(){

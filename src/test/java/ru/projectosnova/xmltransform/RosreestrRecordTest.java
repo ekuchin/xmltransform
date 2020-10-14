@@ -19,7 +19,7 @@ public class RosreestrRecordTest extends Assert {
 
     @Test
     public void houseIsNotEmpty(){
-        String s = source.getHouse();
+        String s = source.getHouse("1");
         System.out.print("House is ");
         System.out.println(s);
         assertFalse(s.isEmpty());

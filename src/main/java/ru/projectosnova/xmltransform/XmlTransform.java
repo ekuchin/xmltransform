@@ -72,12 +72,17 @@ public class XmlTransform {
 
                   RosreestrRecord record = new RosreestrRecord(entry.getPath());
                   String ul=record.getStreet();
-                  String dom=record.getHouse();
+                  String dom=record.getHouse("1");
+                  String korp=record.getHouse("2");
                   String kv=record.getApartment();
                   String sq=record.getArea();
+                  String cadnum = record.getCadastralNumber();
+                  cadnum=cadnum.substring(cadnum.lastIndexOf(':')+1);
 
                   System.out.println(entry.getName());
-                  String outfile=ul+" "+dom+" "+String.format("%1$3s", kv)+" "+sq;
+                  String outfile=ul+" "+dom+" "+korp+" "+String.format("%1$3s", kv)+" "+sq+" "+cadnum;
+                  outfile=outfile.replaceAll("\\s{2,}"," ");
+
                   System.out.println(outfile);
                     //копировать файл
                   Files.copy(Paths.get(entry.getPath()), new FileOutputStream(folderOut+"/"+outfile+".xml"));
@@ -114,7 +119,11 @@ public class XmlTransform {
               Element node = xmlresult.createElement("element");
               root.appendChild(node);
               node.appendChild(xmlresult.createTextNode(entry.getName()));
-              node.setAttribute("kv", record.getApartment());
+              //node.setAttribute("kv", record.getApartment());
+
+              //Для кривых машиномест
+              node.setAttribute("kv", record.getAddressOther());
+
               node.setAttribute("sq", record.getArea());
               node.setAttribute("part", owner.getPart());
               node.setAttribute("reg", owner.getRegistration());

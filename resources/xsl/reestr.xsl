@@ -21,7 +21,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <table>
       <tr>
-        <th>Квартира</th>
+        <th>Помещение</th>
         <th>Код</th>
         <th>Площадь</th>
         <th>Собственник</th>
