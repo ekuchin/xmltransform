@@ -46,6 +46,7 @@ RosreestrRecord(String xmlFilename){
     try{
       res=rights.getAttributes().getNamedItem("Type").getNodeValue();
       res+=rights.getAttributes().getNamedItem("Value").getNodeValue();
+      res = res.replace('/','-');
     }
     catch(Exception e){}
     return res;

@@ -119,10 +119,12 @@ public class XmlTransform {
               Element node = xmlresult.createElement("element");
               root.appendChild(node);
               node.appendChild(xmlresult.createTextNode(entry.getName()));
-              //node.setAttribute("kv", record.getApartment());
+
+              //Для обычных квартир
+              node.setAttribute("kv", record.getApartment());
 
               //Для кривых машиномест
-              node.setAttribute("kv", record.getAddressOther());
+              //node.setAttribute("kv", record.getAddressOther());
 
               node.setAttribute("sq", record.getArea());
               node.setAttribute("part", owner.getPart());
