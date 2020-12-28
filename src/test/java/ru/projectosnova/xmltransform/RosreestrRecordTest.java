@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 public class RosreestrRecordTest extends Assert {
-    private final String xmlfilename="resources/xml/sample.xml";
+    private final String xmlfilename="resources/xml/test.xml";
     private RosreestrRecord source = new RosreestrRecord(xmlfilename);
 
     @Test
@@ -57,5 +57,12 @@ public class RosreestrRecordTest extends Assert {
         assertTrue(arr.size()>0);
     }
 
+    @Test
+    public void numberOnPlanIsNotEmpty(){
+        String s = source.getNumberOnPlan();
+        System.out.print("Number on plan is ");
+        System.out.println(s);
+        assertTrue(s.length()>0);
+    }
 
 }

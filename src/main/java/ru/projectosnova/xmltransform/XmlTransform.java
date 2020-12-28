@@ -121,10 +121,13 @@ public class XmlTransform {
               node.appendChild(xmlresult.createTextNode(entry.getName()));
 
               //Для обычных квартир
-              node.setAttribute("kv", record.getApartment());
+              //node.setAttribute("kv", record.getApartment());
 
               //Для кривых машиномест
               //node.setAttribute("kv", record.getAddressOther());
+
+              //Для безномерных помещений
+              node.setAttribute("kv", record.getNumberOnPlan());
 
               node.setAttribute("sq", record.getArea());
               node.setAttribute("part", owner.getPart());

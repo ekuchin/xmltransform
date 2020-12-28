@@ -59,6 +59,17 @@ public String getArea(){
   return res;
 }
 
+public String getNumberOnPlan(){
+  String res="";
+  NodeList nList = xmldoc.getElementsByTagName("Position");
+  Node rights=nList.item(0);
+  try{
+    res=rights.getAttributes().getNamedItem("NumberOnPlan").getNodeValue();
+  }
+  catch(Exception e){}
+  return res;
+}
+
 public String getApartment(){
   String res="";
   NodeList nList = xmldoc.getElementsByTagName("adrs:Apartment");

@@ -16,7 +16,7 @@ public class App
       XmlTransform.convert(FOLDER_CLEAN, "resources/xml/data.xml");
 
       XmlTransform.export("resources/xml/data.xml","resources/xsl/reestr.xsl","resources/html/reestr.html");
-      // XmlTransform.export("resources/xml/data.xml","resources/xsl/bulletin.xsl","resources/html/bulletin.html");
+      //XmlTransform.export("resources/xml/data.xml","resources/xsl/bulletin.xsl","resources/html/bulletin.html");
         
       //Csv2Xml.convert("old_reestr.csv", "testdata.xml", ";", "data", "element");
 
