@@ -114,9 +114,55 @@ public String getVoices(String part){
   return voices;
 }
 
-public ArrayList<Owner> getOwners(){
+  public ArrayList<Owner> getOwners(){
+    ArrayList<Owner> res = new ArrayList<>();
+
+    //TODO new getOwners
+    NodeList rights = xmldoc.getElementsByTagName("Right");
+       //Перебираем права
+      for (int i = 0; i < rights.getLength(); i++) {
+        String reg="";
+        String part="1";
+        String owner="";
+
+        Element right = (Element) rights.item(i);
+        //Собственники
+        NodeList owners = right.getElementsByTagName("Owner");
+        for (int j = 0; j < owners.getLength(); j++) {
+          Element ownerNode = (Element) owners.item(j);
+          if (ownerNode.getParentNode().getNodeName()!="Encumbrance"){
+            String ownerName = ownerNode.getElementsByTagName("Content").item(0).getTextContent();
+            if (!owner.equals("")){
+              owner+=", ";
+            }
+            owner += ownerName;
+          }
+        }
+        //Данные о регистрации права
+        NodeList regs = right.getElementsByTagName("Registration");
+        if (regs.getLength()>0){
+          Element registration = (Element) regs.item(0);
+          reg = registration.getElementsByTagName("RegNumber").item(0).getTextContent();
+          reg+=" от ";
+          reg += registration.getElementsByTagName("RegDate").item(0).getTextContent();
+
+          NodeList share = registration.getElementsByTagName("Share");
+          if (share.getLength()>0){
+            Element el = (Element) share.item(0);
+            part=el.getAttribute("Numerator")+"/"+el.getAttribute("Denominator");
+          }
+        }
+
+
+        res.add(new Owner(owner,part,reg));
+      }
+    return res;
+  }
+
+public ArrayList<Owner> getOwners_old(){
   ArrayList<Owner> res = new ArrayList<>();
-  NodeList nList = xmldoc.getElementsByTagName("Rights");
+  //NodeList nList = xmldoc.getElementsByTagName("Rights");
+  NodeList nList = xmldoc.getElementsByTagName("ObjectRight");
   Node rights=nList.item(0);
   if (rights!=null){
     String reg="";String part="1";

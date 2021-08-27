@@ -10,9 +10,9 @@ public class App
     {
 
       System.out.println("App started");
-      //XmlTransform.unpack(FOLDER_SOURCE,FOLDER_TMP);
-      //XmlTransform.unpack(FOLDER_TMP,FOLDER_TMP);
-      //XmlTransform.clean(FOLDER_TMP,FOLDER_CLEAN);
+      XmlTransform.unpack(FOLDER_SOURCE,FOLDER_TMP);
+      XmlTransform.unpack(FOLDER_TMP,FOLDER_TMP);
+      XmlTransform.clean(FOLDER_TMP,FOLDER_CLEAN);
       XmlTransform.convert(FOLDER_CLEAN, "resources/xml/data.xml");
 
       //XmlTransform.export("resources/xml/data.xml","resources/xsl/reestr.xsl","resources/html/reestr.html");
