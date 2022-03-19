@@ -9,6 +9,7 @@ import org.w3c.dom.Element;
 import java.io.File;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class RosreestrRecord{
   final static String COMMON_PROPERTY="Совместная";
@@ -117,45 +118,58 @@ public String getVoices(String part){
   public ArrayList<Owner> getOwners(){
     ArrayList<Owner> res = new ArrayList<>();
 
-    //TODO new getOwners
-    NodeList rights = xmldoc.getElementsByTagName("Right");
+     NodeList rights = xmldoc.getElementsByTagName("Right");
        //Перебираем права
       for (int i = 0; i < rights.getLength(); i++) {
-        String reg="";
-        String part="1";
-        String owner="";
-
         Element right = (Element) rights.item(i);
-        //Собственники
-        NodeList owners = right.getElementsByTagName("Owner");
-        for (int j = 0; j < owners.getLength(); j++) {
-          Element ownerNode = (Element) owners.item(j);
-          if (ownerNode.getParentNode().getNodeName()!="Encumbrance"){
-            String ownerName = ownerNode.getElementsByTagName("Content").item(0).getTextContent();
-            if (!owner.equals("")){
-              owner+=", ";
+        boolean isCorrectRightNode=right.getParentNode().getNodeName().equals("ObjectRight");
+        NodeList noOwner = right.getElementsByTagName("NoOwner");
+        boolean isNoOwner=noOwner.getLength()==0;
+        if (isCorrectRightNode && isNoOwner ) {
+
+          String reg = "";
+          String part = "1";
+          StringBuilder owner = new StringBuilder();
+
+          //Собственники
+          NodeList owners = right.getElementsByTagName("Owner");
+          for (int j = 0; j < owners.getLength(); j++) {
+            Element ownerNode = (Element) owners.item(j);
+            if (!Objects.equals(ownerNode.getParentNode().getNodeName(), "Encumbrance")) {
+              String ownerName = ownerNode.getElementsByTagName("Content").item(0).getTextContent();
+              if (!owner.toString().equals("")) {
+                owner.append(", ");
+              }
+              owner.append(ownerName);
             }
-            owner += ownerName;
           }
-        }
-        //Данные о регистрации права
-        NodeList regs = right.getElementsByTagName("Registration");
-        if (regs.getLength()>0){
-          Element registration = (Element) regs.item(0);
-          reg = registration.getElementsByTagName("RegNumber").item(0).getTextContent();
-          reg+=" от ";
-          reg += registration.getElementsByTagName("RegDate").item(0).getTextContent();
+          //Данные о регистрации права
+          NodeList regs = right.getElementsByTagName("Registration");
+          if (regs.getLength() > 0) {
+            Element registration = (Element) regs.item(0);
+            reg = registration.getElementsByTagName("RegNumber").item(0).getTextContent();
+            reg += " от ";
+            reg += registration.getElementsByTagName("RegDate").item(0).getTextContent();
 
-          NodeList share = registration.getElementsByTagName("Share");
-          if (share.getLength()>0){
-            Element el = (Element) share.item(0);
-            part=el.getAttribute("Numerator")+"/"+el.getAttribute("Denominator");
+            NodeList shareText = registration.getElementsByTagName("ShareText");
+            if (shareText.getLength() > 0) {
+              String content = shareText.item(0).getTextContent();
+              if(content.contains("/")){
+                part = content;
+              }
+            }
+
+            NodeList share = registration.getElementsByTagName("Share");
+            if (share.getLength() > 0) {
+              Element el = (Element) share.item(0);
+              part = el.getAttribute("Numerator") + "/" + el.getAttribute("Denominator");
+            }
           }
+
+
+          res.add(new Owner(owner.toString(), part, reg));
         }
-
-
-        res.add(new Owner(owner,part,reg));
-      }
+        }
     return res;
   }
 
